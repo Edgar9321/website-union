@@ -38,7 +38,7 @@
     overflow: hidden;
   }
 
-  .br-stage svg {
+  .br-stage > svg {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -552,7 +552,7 @@
           <animate attributeName="baseFrequency" values="0.014 0.085;0.021 0.11;0.011 0.07;0.014 0.085"
                     dur="6s" repeatCount="indefinite"/>
         </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="17" xChannelSelector="R" yChannelSelector="G"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
       <mask id="revealMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920">
         <g id="dripColumns"></g>
@@ -827,7 +827,7 @@
     const baseW = VB_W / N;
     const columns = [];
     for (let i = 0; i < N; i++) {
-      const width = baseW * (1.18 + Math.random() * 0.22);
+      const width = baseW * (1.55 + Math.random() * 0.35);
       const x = i * baseW - (width - baseW) / 2 + (Math.random() * 8 - 4);
       const delay1 = Math.random() * 1250;
       const dur1 = 3250 + Math.random() * 2450;
