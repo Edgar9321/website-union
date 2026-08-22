@@ -28,11 +28,15 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
+  body.br-loading {
+    overflow: hidden;
+    height: 100%;
+  }
 
   .br-stage {
     position: relative;
     width: 100%;
-    height: 100vh;
+    aspect-ratio: 1672 / 941;
     min-height: 560px;
     background: var(--ink);
     overflow: hidden;
@@ -171,7 +175,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 5vh;
+    bottom: 5%;
     z-index: 4;
     text-align: center;
     padding: 0 20px;
@@ -563,10 +567,10 @@
   }
 </style>
 </head>
-<body>
+<body class="br-loading">
 
 <section class="br-stage" id="brStage">
-  <svg viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+  <svg viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid meet">
     <defs>
       <filter id="liquidEdge" x="-40%" y="-40%" width="180%" height="180%">
         <feTurbulence id="liquidNoise" type="fractalNoise" baseFrequency="0.014 0.085" numOctaves="2" seed="7" result="noise">
@@ -575,13 +579,13 @@
         </feTurbulence>
         <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
-      <mask id="revealMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920">
+      <mask id="revealMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1672" height="941">
         <g id="dripColumns"></g>
       </mask>
     </defs>
     <g id="heroGroup" mask="url(#revealMask)">
       <g id="figureZoomInner">
-        <image href="images/READY.png" x="0" y="0" width="1080" height="1920" preserveAspectRatio="xMidYMid slice"/>
+        <image href="images/Ready quer.png" x="0" y="0" width="1672" height="941" preserveAspectRatio="xMidYMid slice"/>
       </g>
     </g>
     <g id="dripBeads"></g>
@@ -664,6 +668,14 @@
   <button class="br-nav-toggle" id="brNavToggle" aria-label="Menü öffnen" aria-expanded="false">&#9776;</button>
 </nav>
 
+<section class="br-section" id="konzept">
+  <div class="br-section-head">
+    <span class="br-eyebrow-sm">&mdash; Konzept</span>
+    <h2>Fokus. Dunkelheit. Sound.</h2>
+    <p>Techno, Hardtech und Bounce in dichter, reduzierter Club-Atmosphäre &mdash; dunkles Setting, gezieltes Licht, voller Fokus auf Musik und Crowd. Keine Ablenkung, maximale Intensität.<br><br>Die Ticketanzahl ist limitiert. Ein gültiger Lichtbildausweis ist beim Einlass vorzuzeigen. Weitere Details zu Einlasszeiten werden rechtzeitig bekanntgegeben.</p>
+  </div>
+</section>
+
 <section class="br-section" id="tickets">
   <div class="br-section-head">
     <span class="br-eyebrow-sm">&mdash; Vorverkauf</span>
@@ -680,6 +692,7 @@
       <ul>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Zutritt zum Borderrave 2026</li>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Regulärer Vorverkaufspreis</li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Limitierte Anzahl an Tickets</li>
       </ul>
       <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer" class="br-ticket-link">
         Ticket sichern
@@ -835,7 +848,16 @@
   const beadsLayer = document.getElementById('dripBeads');
   const figureZoomInner = document.getElementById('figureZoomInner');
 
-  const VB_W = 1080, VB_H = 1920;
+  function unlockScroll() {
+    document.body.classList.remove('br-loading');
+  }
+  if (reduceMotion) {
+    unlockScroll();
+  } else {
+    document.querySelector('.br-title').addEventListener('animationend', unlockScroll, { once: true });
+  }
+
+  const VB_W = 1672, VB_H = 941;
   const BODY_H = VB_H * 0.82;
   const N = 74;
 
