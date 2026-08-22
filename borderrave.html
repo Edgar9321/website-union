@@ -14,6 +14,9 @@
     --ink: #050605;
   }
   * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+  }
   html, body {
     margin: 0;
     padding: 0;
@@ -21,6 +24,9 @@
     color: #f2f2f0;
     font-family: 'Space Mono', monospace;
     overflow-x: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
   }
 
   .br-stage {
@@ -49,46 +55,170 @@
       linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 55%, rgba(5,6,5,0.85) 90%, rgba(5,6,5,1) 100%);
   }
 
-  .br-topbar {
-    position: absolute;
+  .br-nav {
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    z-index: 20;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 22px 26px;
-    z-index: 5;
-  }
-  .br-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #f2f2f0;
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    gap: 20px;
+    padding: 16px 26px;
+    background: rgba(5,6,5,0.55);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(242,242,240,0.08);
     opacity: 0;
     animation: br-fade-in 0.8s ease forwards;
     animation-delay: 6.1s;
-    border: 1px solid rgba(242,242,240,0.35);
-    padding: 8px 14px;
-    border-radius: 999px;
-    backdrop-filter: blur(4px);
-    background: rgba(5,6,5,0.35);
   }
-  .br-back:hover { border-color: var(--acid); color: var(--acid); }
+  .br-nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    color: #f5fff7;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .br-nav-brand span { color: var(--acid); }
+  .br-nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .br-nav-links a {
+    color: #cfd3cf;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
+  .br-nav-links a:hover { color: var(--acid); }
+  .br-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--acid);
+    border: 1px solid var(--acid);
+    padding: 9px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .br-nav-cta:hover { background: var(--acid); color: var(--ink); }
+  .br-nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid rgba(242,242,240,0.35);
+    border-radius: 6px;
+    width: 38px;
+    height: 34px;
+    color: #f2f2f0;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 780px) {
+    .br-nav-links { display: none; }
+    .br-nav-cta { display: none; }
+    .br-nav-toggle { display: block; }
+    .br-nav.is-open .br-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(5,6,5,0.97);
+      padding: 14px 26px 20px;
+      border-bottom: 1px solid rgba(242,242,240,0.08);
+    }
+    .br-nav.is-open .br-nav-links a { padding: 10px 0; border-bottom: 1px solid rgba(242,242,240,0.06); }
+    .br-nav.is-open .br-nav-cta { display: inline-flex; margin: 12px 26px 18px; }
+  }
 
   .br-content {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 6vh;
+    bottom: 5vh;
     z-index: 4;
     text-align: center;
     padding: 0 20px;
   }
+
+  .br-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 18px;
+    margin: 10px 0 22px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #cfd3cf;
+    opacity: 0;
+    animation: br-fade-up 0.9s ease forwards;
+    animation-delay: 6.85s;
+  }
+  .br-meta b { color: #f5fff7; font-weight: 700; }
+  .br-meta .dim { color: rgba(207,211,207,0.55); }
+
+  .br-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 380px;
+    margin: 0 auto 26px;
+    text-align: left;
+    opacity: 0;
+    animation: br-fade-up 0.9s ease forwards;
+    animation-delay: 7.05s;
+  }
+  .br-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    color: #cfd3cf;
+  }
+  .br-bullet svg { flex: none; margin-top: 2px; color: var(--acid); }
+  .br-bullet b { display: block; color: #f5fff7; font-size: 13px; letter-spacing: 0.03em; }
+
+  .br-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    opacity: 0;
+    animation: br-fade-up 0.9s ease forwards;
+    animation-delay: 7.3s;
+  }
+  .br-cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #f2f2f0;
+    border: 1px solid rgba(242,242,240,0.35);
+    padding: 14px 24px;
+    border-radius: 2px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .br-cta-ghost:hover { border-color: var(--acid); color: var(--acid); }
 
   .br-eyebrow {
     display: inline-block;
@@ -115,47 +245,24 @@
     animation-delay: 6.5s;
   }
 
-  .br-sub {
-    margin: 14px 0 26px;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: #cfd3cf;
-    opacity: 0;
-    animation: br-fade-up 0.9s ease forwards;
-    animation-delay: 6.9s;
-  }
-  .br-sub b { color: var(--acid); font-weight: 700; }
-
   .br-cta {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: 'Space Mono', monospace;
     font-weight: 700;
     font-size: 13px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     text-decoration: none;
     color: var(--ink);
     background: var(--acid);
-    padding: 15px 34px;
+    padding: 15px 30px;
     border-radius: 2px;
     box-shadow: 0 0 30px rgba(61,255,110,0.4);
-    opacity: 0;
-    animation: br-fade-up 0.9s ease forwards;
-    animation-delay: 7.3s;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .br-cta:hover { transform: translateY(-2px); box-shadow: 0 4px 40px rgba(61,255,110,0.65); }
-
-  .br-scroll-note {
-    margin-top: 22px;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: rgba(242,242,240,0.4);
-    opacity: 0;
-    animation: br-fade-in 1s ease forwards;
-    animation-delay: 7.75s;
-  }
 
   @keyframes br-fade-in { to { opacity: 1; } }
   @keyframes br-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
@@ -167,28 +274,266 @@
     100% { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
 
-  .br-info {
-    max-width: 760px;
+  /* ---- content sections below the hero ---- */
+  .br-section {
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 90px 24px 120px;
+    padding: 90px 26px;
+    scroll-margin-top: 74px;
+  }
+  .br-section + .br-section { padding-top: 0; }
+  .br-section-head {
     text-align: center;
+    max-width: 640px;
+    margin: 0 auto 48px;
   }
-  .br-info h2 {
+  .br-section-head .br-eyebrow-sm {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin: 0 0 10px;
+  }
+  .br-section-head h2 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    letter-spacing: 0.04em;
-    color: var(--acid);
-    margin: 0 0 16px;
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: 0.03em;
+    color: #f5fff7;
+    margin: 0 0 12px;
+    text-wrap: balance;
   }
-  .br-info p {
+  .br-section-head p {
     font-size: 14px;
     line-height: 1.8;
     color: #cfd3cf;
     margin: 0;
   }
 
+  /* tickets */
+  .br-tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .br-ticket-card {
+    border: 1px solid rgba(242,242,240,0.14);
+    background: linear-gradient(165deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+    border-radius: 4px;
+    padding: 30px 26px;
+  }
+  .br-ticket-card.is-support { border-color: rgba(255,43,61,0.35); }
+  .br-ticket-icon { color: var(--acid); margin-bottom: 16px; }
+  .br-ticket-card.is-support .br-ticket-icon { color: var(--blood); }
+  .br-ticket-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.03em;
+    margin: 0 0 4px;
+    color: #f5fff7;
+  }
+  .br-ticket-status {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(207,211,207,0.6);
+    margin-bottom: 16px;
+  }
+  .br-ticket-card ul {
+    list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .br-ticket-card li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 13px;
+    color: #cfd3cf;
+  }
+  .br-ticket-card li svg { flex: none; margin-top: 3px; color: var(--acid); }
+  .br-ticket-card.is-support li svg { color: var(--blood); }
+  .br-ticket-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--acid);
+    padding: 12px 20px;
+    border-radius: 2px;
+    transition: transform 0.2s ease;
+  }
+  .br-ticket-card.is-support .br-ticket-link { background: var(--blood); }
+  .br-ticket-link:hover { transform: translateY(-2px); }
+  .br-tickets-note {
+    text-align: center;
+    margin: 30px 0 0;
+    font-size: 12px;
+    color: rgba(207,211,207,0.65);
+  }
+  .br-tickets-note a { color: var(--acid); text-decoration: none; border-bottom: 1px solid rgba(61,255,110,0.35); }
+
+  /* lineup */
+  .br-lineup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+  }
+  .br-lineup-card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #0b0d0b;
+    border: 1px solid rgba(242,242,240,0.1);
+  }
+  .br-lineup-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.05);
+  }
+  .br-lineup-card.is-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #0d130f, #050605);
+  }
+  .br-lineup-card.is-placeholder .initial {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem;
+    color: rgba(61,255,110,0.35);
+  }
+  .br-lineup-card.is-soon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-linear-gradient(135deg, #0b0d0b 0 10px, #0e100e 10px 20px);
+  }
+  .br-lineup-card.is-soon .q { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: rgba(242,242,240,0.25); }
+  .br-lineup-meta {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 14px 12px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.9), rgba(0,0,0,0));
+  }
+  .br-lineup-meta .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: #f5fff7;
+    display: block;
+  }
+  .br-lineup-meta .genre {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--acid);
+  }
+  .br-lineup-card.is-soon .br-lineup-meta .genre,
+  .br-lineup-card.is-placeholder .br-lineup-meta .genre { color: rgba(207,211,207,0.5); }
+  .br-lineup-note {
+    text-align: center;
+    margin: 26px 0 0;
+    font-size: 12px;
+    color: rgba(207,211,207,0.6);
+  }
+
+  /* info strip */
+  .br-info-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 24px;
+    border-top: 1px solid rgba(242,242,240,0.1);
+    border-bottom: 1px solid rgba(242,242,240,0.1);
+    padding: 36px 0;
+  }
+  .br-info-item { text-align: center; }
+  .br-info-item svg { color: var(--acid); margin-bottom: 10px; }
+  .br-info-item .label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(207,211,207,0.55);
+    margin-bottom: 6px;
+  }
+  .br-info-item .value {
+    font-size: 13px;
+    color: #f5fff7;
+    line-height: 1.6;
+  }
+
+  /* faq */
+  .br-faq { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 1px; background: rgba(242,242,240,0.1); }
+  .br-faq-item { background: var(--ink); padding: 22px 4px; }
+  .br-faq-item h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: #f5fff7;
+    margin: 0 0 8px;
+  }
+  .br-faq-item p { font-size: 13px; line-height: 1.7; color: #cfd3cf; margin: 0; }
+  .br-faq-item a { color: var(--acid); text-decoration: none; border-bottom: 1px solid rgba(61,255,110,0.35); }
+
+  /* footer */
+  .br-footer {
+    border-top: 1px solid rgba(242,242,240,0.1);
+    padding: 40px 26px 34px;
+  }
+  .br-footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .br-footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.03em;
+    color: #f5fff7;
+  }
+  .br-footer-brand span { color: var(--acid); }
+  .br-footer-sub {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: rgba(207,211,207,0.55);
+    margin-top: 4px;
+  }
+  .br-footer-sub a { color: rgba(207,211,207,0.8); text-decoration: none; }
+  .br-footer-sub a:hover { color: var(--acid); }
+  .br-footer-social {
+    display: flex;
+    gap: 10px;
+  }
+  .br-footer-social a {
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(242,242,240,0.2);
+    border-radius: 999px;
+    color: #f2f2f0;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .br-footer-social a:hover { border-color: var(--acid); color: var(--acid); }
+
   @media (prefers-reduced-motion: reduce) {
-    .br-back, .br-eyebrow, .br-title, .br-sub, .br-cta, .br-scroll-note {
+    .br-nav, .br-eyebrow, .br-title, .br-meta, .br-bullets, .br-cta-row {
       animation: none !important;
       opacity: 1 !important;
       filter: none !important;
@@ -233,24 +578,214 @@
   </svg>
   <div class="br-vignette"></div>
 
-  <div class="br-topbar">
-    <a href="index.html" class="br-back">&larr; Union Steinbrunn Schardenberg</a>
-  </div>
-
   <div class="br-content">
     <p class="br-eyebrow">&mdash; Black Box Arena presents</p>
     <h1 class="br-title">BORDERRAVE</h1>
-    <p class="br-sub">Line-up &amp; Datum folgen &middot; <b>Save the date</b></p>
-    <a href="#" class="br-cta">Infos folgen</a>
-    <p class="br-scroll-note">&darr; scroll</p>
+
+    <p class="br-meta">
+      <b>Black Box Arena</b> &middot; Schardenberg &nbsp;&middot;&nbsp; <b>24.10.2026</b>
+    </p>
+
+    <div class="br-bullets">
+      <div class="br-bullet">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v2a2 2 0 01-2 2 2 2 0 000 4 2 2 0 012 2v2H4v-2a2 2 0 012-2 2 2 0 000-4 2 2 0 01-2-2v-2a2 2 0 012-2 2 2 0 000-4 2 2 0 01-2-2V4h16v2a2 2 0 01-2 2 2 2 0 000 4 2 2 0 012 2z"/></svg>
+        <span><b>Pre-Sale Tickets</b>Ab sofort im offiziellen Ticketshop erhältlich.</span>
+      </div>
+      <div class="br-bullet">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>
+        <span><b>Supporters Ticket</b>Unterstütze den Borderrave direkt.</span>
+      </div>
+    </div>
+
+    <div class="br-cta-row">
+      <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer" class="br-cta">
+        Tickets sichern
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M8 7h9v9"/></svg>
+      </a>
+      <a href="#lineup" class="br-cta-ghost">
+        Lineup entdecken
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
-<section class="br-info">
-  <h2>Was ist der Borderrave?</h2>
-  <p>Ein eigenes Event, eine eigene Nacht &mdash; abseits der Vereinsseite. Details zu Line-up, Tickets und Location
-  folgen in Kürze. Bleibt dran.</p>
+<nav class="br-nav" id="brNav">
+  <a href="#brStage" class="br-nav-brand">BORDER<span>RAVE</span></a>
+  <ul class="br-nav-links">
+    <li><a href="#brStage">Home</a></li>
+    <li><a href="#tickets">Tickets</a></li>
+    <li><a href="#lineup">Lineup</a></li>
+    <li><a href="#info">Info</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer" class="br-nav-cta">Tickets sichern</a>
+  <button class="br-nav-toggle" id="brNavToggle" aria-label="Menü öffnen" aria-expanded="false">&#9776;</button>
+</nav>
+
+<section class="br-section" id="tickets">
+  <div class="br-section-head">
+    <span class="br-eyebrow-sm">&mdash; Vorverkauf</span>
+    <h2>Tickets</h2>
+    <p>Der Vorverkauf läuft extern über unseren Ticketshop. Preise und verfügbare Kontingente siehst du dort in Echtzeit.</p>
+  </div>
+  <div class="br-tickets-grid">
+    <div class="br-ticket-card">
+      <div class="br-ticket-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12v2a2 2 0 01-2 2 2 2 0 000 4 2 2 0 012 2v2H4v-2a2 2 0 012-2 2 2 0 000-4 2 2 0 01-2-2v-2a2 2 0 012-2 2 2 0 000-4 2 2 0 01-2-2V4h16v2a2 2 0 01-2 2 2 2 0 000 4 2 2 0 012 2z"/></svg>
+      </div>
+      <h3>Pre-Sale</h3>
+      <span class="br-ticket-status">Im Ticketshop erhältlich</span>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Zutritt zum Borderrave 2026</li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Regulärer Vorverkaufspreis</li>
+      </ul>
+      <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer" class="br-ticket-link">
+        Ticket sichern
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M7 17L17 7M8 7h9v9"/></svg>
+      </a>
+    </div>
+    <div class="br-ticket-card is-support">
+      <div class="br-ticket-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>
+      </div>
+      <h3>Supporters Ticket</h3>
+      <span class="br-ticket-status">Im Ticketshop erhältlich</span>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Zutritt zum Borderrave 2026</li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Direkte Unterstützung des Events</li>
+      </ul>
+      <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer" class="br-ticket-link">
+        Ticket sichern
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M7 17L17 7M8 7h9v9"/></svg>
+      </a>
+    </div>
+  </div>
+  <p class="br-tickets-note">Sichere dir jetzt dein Ticket im <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer">offiziellen Ticketshop</a> &amp; sei dabei.</p>
 </section>
+
+<section class="br-section" id="lineup">
+  <div class="br-section-head">
+    <span class="br-eyebrow-sm">&mdash; Line-up</span>
+    <h2>Wer auflegt</h2>
+    <p>Die ersten Acts stehen fest &mdash; weitere folgen in Kürze.</p>
+  </div>
+  <div class="br-lineup-grid">
+    <div class="br-lineup-card">
+      <img src="images/lineup-fyr.jpg" alt="FYR">
+      <div class="br-lineup-meta">
+        <span class="name">FYR</span>
+        <span class="genre">Hardbounce</span>
+      </div>
+    </div>
+    <div class="br-lineup-card">
+      <img src="images/lineup-emilia.jpg" alt="Emilia Mlinski">
+      <div class="br-lineup-meta">
+        <span class="name">Emilia Mlinski</span>
+        <span class="genre">Trance / Hardbounce</span>
+      </div>
+    </div>
+    <div class="br-lineup-card is-soon">
+      <span class="q">???</span>
+      <div class="br-lineup-meta">
+        <span class="name">Coming Soon</span>
+        <span class="genre">Wird bekanntgegeben</span>
+      </div>
+    </div>
+    <div class="br-lineup-card is-soon">
+      <span class="q">???</span>
+      <div class="br-lineup-meta">
+        <span class="name">Coming Soon</span>
+        <span class="genre">Wird bekanntgegeben</span>
+      </div>
+    </div>
+  </div>
+  <p class="br-lineup-note">Weitere Acts werden laufend bekanntgegeben.</p>
+</section>
+
+<section class="br-section" id="info">
+  <div class="br-info-strip">
+    <div class="br-info-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+      <span class="label">Location</span>
+      <span class="value">Black Box Arena<br>Schardenberg</span>
+    </div>
+    <div class="br-info-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      <span class="label">Datum</span>
+      <span class="value">24.10.2026</span>
+    </div>
+    <div class="br-info-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+      <span class="label">Einlass</span>
+      <span class="value">Ab 22:00 Uhr</span>
+    </div>
+    <div class="br-info-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>
+      <span class="label">Sounds</span>
+      <span class="value">Techno &middot; Hard Techno &middot; Bounce</span>
+    </div>
+    <div class="br-info-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 9h.01M15 9h.01M8.5 15c1 1 2.2 1.5 3.5 1.5s2.5-.5 3.5-1.5"/></svg>
+      <span class="label">Altersfreigabe</span>
+      <span class="value">Ab 18 Jahren</span>
+    </div>
+  </div>
+</section>
+
+<section class="br-section" id="faq">
+  <div class="br-section-head">
+    <span class="br-eyebrow-sm">&mdash; Fragen &amp; Antworten</span>
+    <h2>FAQ</h2>
+  </div>
+  <div class="br-faq">
+    <div class="br-faq-item">
+      <h3>Wo bekomme ich Tickets?</h3>
+      <p>Ausschließlich im offiziellen <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer">Ticketshop</a>. Dort siehst du auch Preise und Verfügbarkeit.</p>
+    </div>
+    <div class="br-faq-item">
+      <h3>Wer veranstaltet den Borderrave?</h3>
+      <p>Die <a href="index.html">Union Steinbrunn Schardenberg</a> &mdash; der Borderrave ist ein eigenständiges Event abseits des regulären Spielbetriebs.</p>
+    </div>
+    <div class="br-faq-item">
+      <h3>Wann und wo findet der Borderrave statt?</h3>
+      <p>Am 24.10.2026 in der Black Box Arena in Schardenberg. Einlass ab 22:00 Uhr.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="br-footer">
+  <div class="br-footer-inner">
+    <div>
+      <span class="br-footer-brand">BORDER<span>RAVE</span></span>
+      <span class="br-footer-sub">Presented by <a href="index.html">Union Steinbrunn Schardenberg</a></span>
+    </div>
+    <div class="br-footer-social">
+      <a href="https://www.instagram.com/unionschardenberg/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/unionschardenberg/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M22 12.061C22 6.505 17.523 2 12 2S2 6.505 2 12.061c0 5.022 3.657 9.184 8.438 9.939v-7.03H7.898v-2.909h2.54V9.845c0-2.522 1.492-3.915 3.777-3.915 1.094 0 2.238.197 2.238.197v2.476h-1.26c-1.243 0-1.63.775-1.63 1.57v1.888h2.773l-.443 2.909h-2.33V22c4.78-.755 8.437-4.917 8.437-9.939z"/></svg>
+      </a>
+    </div>
+    <a href="https://uschtickets.stgdts.com" target="_blank" rel="noopener noreferrer" class="br-nav-cta">Tickets sichern</a>
+  </div>
+</footer>
+
+<script>
+  const brNav = document.getElementById('brNav');
+  const brNavToggle = document.getElementById('brNavToggle');
+  brNavToggle.addEventListener('click', () => {
+    const isOpen = brNav.classList.toggle('is-open');
+    brNavToggle.setAttribute('aria-expanded', isOpen);
+  });
+  brNav.querySelectorAll('.br-nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      brNav.classList.remove('is-open');
+      brNavToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
