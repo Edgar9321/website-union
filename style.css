@@ -91,6 +91,25 @@ a {
   transform: scale(1.06);
 }
 
+.header-icon-btn-glow {
+  border-color: rgba(61, 255, 110, 0.6);
+  box-shadow: 0 0 6px rgba(61, 255, 110, 0.55), 0 0 14px rgba(61, 255, 110, 0.35);
+  animation: header-icon-glow-pulse 2.2s ease-in-out infinite;
+}
+
+.header-icon-btn-glow:hover {
+  border-color: rgba(61, 255, 110, 0.9);
+}
+
+@keyframes header-icon-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(61, 255, 110, 0.55), 0 0 14px rgba(61, 255, 110, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(61, 255, 110, 0.9), 0 0 22px rgba(61, 255, 110, 0.55);
+  }
+}
+
 .brand-mark {
   width: 48px;
   height: 48px;
